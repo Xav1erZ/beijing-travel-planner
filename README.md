@@ -1,15 +1,22 @@
-<<<<<<< HEAD
-# AI北京三日游策划公司 - 一人公司结课作品
+# 腾讯自研虾作业 - AI员工团队：北京三日游策划公司
 
-![项目截图](https://img.shields.io/badge/状态-已完成-success)
-![技术栈](https://img.shields.io/badge/技术-HTML/CSS/JS-blue)
-![部署](https://img.shields.io/badge/部署-GitHub_Pages-green)
+![项目状态](https://img.shields.io/badge/状态-已完成-success)
+![技术栈](https://img.shields.io/badge/技术-HTML/CSS/JS/Flask-blue)
+![部署状态](https://img.shields.io/badge/部署-GitHub_Pages-绿色)
+![AI集成](https://img.shields.io/badge/AI-智谱AI-蓝色)
 
 ## 项目简介
-这是一个"AI北京三日游策划公司"的网页Demo，作为一人公司的结课作品展示。网站使用纯HTML、CSS和JavaScript构建，无需复杂框架，支持一键部署到GitHub Pages。
+这是一个"腾讯自研虾作业：创建你的AI员工团队"的结课作品项目。我们创建了一个AI北京三日游策划公司网站，结合了前端网页设计和后端AI API集成，实现了完整的旅行规划解决方案。
 
-## 功能特色
+**项目作者：高梓翔**
+
+## 在线演示
+- 🌐 **网站地址**：[https://xav1erz.github.io/beijing-travel-planner/](https://xav1erz.github.io/beijing-travel-planner/)
+- 🐙 **GitHub仓库**：[https://github.com/Xav1erZ/beijing-travel-planner](https://github.com/Xav1erZ/beijing-travel-planner)
+
+## 核心功能
 - 🎯 **AI智能规划**：根据用户兴趣、预算和旅行风格生成个性化北京三日游行程
+- 🤖 **真实AI集成**：集成智谱AI API，实现动态、个性化的行程介绍
 - 📍 **经典行程推荐**：提供三种经典北京三日游方案
 - 🗺️ **交互式行程查看**：点击标签切换查看不同天的详细安排
 - 💰 **预算滑块**：可视化调整预算范围，实时更新AI建议
@@ -21,175 +28,137 @@
 beijing-travel-planner/
 ├── index.html          # 主页面HTML文件
 ├── style.css           # 样式文件
-├── script.js           # JavaScript交互文件
-└── README.md           # 项目说明文件
+├── script.js           # JavaScript交互文件（含AI生成功能）
+├── app.py              # Flask后端服务器（可选，用于本地AI API调用）
+├── requirements.txt    # Python依赖文件
+├── README.md           # 项目说明文件
+└── 腾讯自研虾作业_高梓翔_AI员工团队_最终提交版.pptx  # 项目PPT演示文稿
 ```
+
+## 技术架构
+
+### 前端技术栈
+- **HTML5**：语义化标签，清晰的内容结构
+- **CSS3**：Flexbox/Grid布局，响应式设计，CSS变量
+- **JavaScript**：DOM操作，事件处理，异步API调用
+
+### 后端技术栈（可选本地运行）
+- **Python Flask**：轻量级Web框架
+- **智谱AI API**：真实的AI内容生成
+- **RESTful API**：前后端分离架构
+
+### 部署方式
+- **GitHub Pages**：静态网站托管
+- **Flask服务器**：本地运行AI功能（需要API密钥）
 
 ## 快速开始
 
-### 1. 本地运行
-1. 下载本项目所有文件
-2. 双击打开 `index.html` 文件
-3. 或在浏览器中打开 `file:///你的路径/index.html`
+### 1. 使用GitHub Pages版本（推荐）
+1. 直接访问：[https://xav1erz.github.io/beijing-travel-planner/](https://xav1erz.github.io/beijing-travel-planner/)
+2. 无需任何配置，开箱即用
 
-### 2. 在CodeBuddy中预览
-1. 在CodeBuddy中打开项目文件夹
-2. 右键点击 `index.html` 文件
-3. 选择"在浏览器中打开"或使用预览功能
-
-## GitHub Pages部署步骤
-
-### 第一步：创建GitHub账号（如果还没有）
-1. 访问 [GitHub官网](https://github.com)
-2. 点击"Sign up"注册新账号
-3. 完成邮箱验证
-
-### 第二步：创建新的GitHub仓库
-1. 登录GitHub后，点击右上角"+"号
-2. 选择"New repository"
-3. 填写仓库信息：
-   - Repository name: `beijing-travel-planner`（或其他名称）
-   - Description: "AI北京三日游策划公司网站"
-   - 选择"Public"（公开）
-   - **不要勾选** "Initialize this repository with a README"
-4. 点击"Create repository"
-
-### 第三步：上传文件到GitHub仓库
-1. 在仓库页面，找到"…or create a new repository on the command line"部分
-2. 按照指示，在本地打开命令行/终端
-3. 依次执行以下命令：
-
+### 2. 本地运行带AI功能版本
 ```bash
-# 1. 进入项目文件夹
-cd "你的项目路径"
+# 克隆项目
+git clone https://github.com/Xav1erZ/beijing-travel-planner.git
+cd beijing-travel-planner
 
-# 2. 初始化Git仓库
-git init
+# 安装依赖
+pip install -r requirements.txt
 
-# 3. 添加所有文件
-git add .
+# 运行Flask服务器
+python app.py
 
-# 4. 提交更改
-git commit -m "首次提交：AI北京三日游策划公司网站"
-
-# 5. 连接到GitHub远程仓库
-git remote add origin https://github.com/你的用户名/beijing-travel-planner.git
-
-# 6. 推送到GitHub
-git branch -M main
-git push -u origin main
+# 访问 http://127.0.0.1:5001
 ```
 
-### 第四步：配置GitHub Pages
-1. 返回GitHub仓库页面
-2. 点击顶部"Settings"选项卡
-3. 在左侧菜单中找到"Pages"
-4. 在"Source"部分：
-   - Branch: 选择 `main`
-   - Folder: 选择 `/ (root)`
-5. 点击"Save"
-6. 等待1-2分钟，页面会显示部署链接，如：`https://你的用户名.github.io/beijing-travel-planner/`
+## AI功能详解
 
-### 第五步：访问你的网站
-1. 复制GitHub Pages提供的链接
-2. 在浏览器中打开链接
-3. 分享给你的朋友或老师！
+### 1. AI生成行程介绍
+- 前端：用户选择兴趣偏好、预算范围、旅行风格
+- 后端：调用智谱AI API生成个性化行程介绍
+- 特点：每次生成都是唯一的，基于用户偏好动态调整
 
-## 网站功能使用指南
+### 2. API调用流程
+```python
+# app.py中的关键代码
+@app.route('/generate_speech', methods=['POST'])
+def generate_speech():
+    data = request.get_json()
+    preferences = data.get('preferences', '')
+    
+    # 调用智谱AI API
+    response = client.chat.completions.create(
+        model="glm-4-flash",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.8,
+        max_tokens=500
+    )
+    
+    return jsonify({"speech": speech, "status": "success"})
+```
 
-### 1. 导航栏
-- 点击导航链接可平滑滚动到对应部分
-- "开始规划"按钮直接跳转到AI规划器
+## 项目特色
 
-### 2. 行程推荐
-- 点击"第一天"、"第二天"、"第三天"标签查看不同行程
-- 每个行程包含详细的时间安排和活动描述
+### 1. 完整的AI员工团队概念
+- **AI行程规划师**：智能生成个性化行程
+- **AI客服助手**：提供详细的景点介绍
+- **AI预算分析师**：根据预算推荐最佳方案
 
-### 3. AI规划器
-1. **选择兴趣偏好**：点击标签选择您的兴趣
-2. **调整预算**：拖动滑块设置预算范围
-3. **选择旅行风格**：单选按钮选择行程紧凑程度
-4. **生成计划**：点击"生成AI行程计划"按钮
-5. **查看结果**：AI将根据您的偏好生成个性化行程
+### 2. 用户体验优化
+_iPad上优化了表单交互
+- 移动端适配的响应式设计
+- 平滑的动画和过渡效果
+- 直观的用户界面和操作流程
 
-### 4. 响应式设计
-- 在手机、平板、电脑上都能良好显示
-- 导航栏在小屏幕上会自动折叠
-- 所有交互元素都针对触摸屏优化
+### 3. 教育价值
+- 展示了如何将AI技术集成到实际应用中
+- 体现了前后端分离的开发模式
+- 展示了GitHub Pages的部署流程
 
-## 技术实现
+## 部署指南
 
-### HTML结构
-- 语义化HTML5标签
-- 清晰的内容分区
-- 无障碍访问支持
+### GitHub Pages部署
+1. 项目已配置为GitHub Pages托管
+2. 自动部署main分支到根目录
+3. 访问链接：https://xav1erz.github.io/beijing-travel-planner/
 
-### CSS样式
-- Flexbox和Grid布局
-- 响应式设计媒体查询
-- CSS变量和渐变效果
-- 平滑过渡动画
+### 自定义部署
+如需修改部署，可在GitHub仓库的Settings > Pages中配置：
+- Branch: `main`
+- Folder: `/ (root)`
 
-### JavaScript功能
-- DOM操作和事件处理
-- 表单验证和数据处理
-- 平滑滚动和交互动画
-- 本地模拟AI算法
+## 项目成果
 
-## 定制化修改
+### 1. 网页应用
+- 完整的旅行规划网站
+- 响应式设计，跨平台兼容
+- AI集成功能
 
-### 修改公司信息
-编辑 `index.html` 文件：
-- 第12行：修改页面标题
-- 第25行：修改公司名称
-- 第261-267行：修改关于我们的内容
-- 第285-300行：修改页脚信息
+### 2. 演示PPT
+- 包含项目介绍、功能展示、技术架构
+- 截图展示实际效果
+- 部署流程说明
 
-### 修改行程内容
-编辑 `index.html` 文件：
-- 第118-190行：修改三天行程安排
-- 每个行程包含时间、地点和描述
-
-### 修改样式
-编辑 `style.css` 文件：
-- 第18-20行：修改主题颜色
-- 第30-35行：修改导航栏样式
-- 第100-110行：修改英雄区域样式
-
-### 修改AI算法
-编辑 `script.js` 文件：
-- 第150-250行：`generatePersonalizedItinerary`函数
-- 修改根据兴趣生成行程的逻辑
-
-## 常见问题
-
-### Q: 网站打不开怎么办？
-A: 检查以下几点：
-1. 确保所有文件都在同一文件夹
-2. 检查浏览器控制台是否有错误
-3. GitHub Pages部署后需要等待1-2分钟
-
-### Q: 如何修改AI生成的行程？
-A: 编辑 `script.js` 文件中的 `generatePersonalizedItinerary` 函数，修改不同兴趣对应的行程安排。
-
-### Q: 网站如何在手机上显示？
-A: 网站已做好响应式设计，在手机上会自动调整布局。如需进一步优化，可修改 `style.css` 中的媒体查询部分。
-
-### Q: 如何添加更多景点？
-A: 在 `index.html` 的行程部分添加新的 `schedule-item` 元素，格式参考现有结构。
+### 3. 代码仓库
+- 完整的前后端代码
+- 详细的文档说明
+- MIT许可证，可自由使用
 
 ## 许可证
-本项目为结课作品，仅供学习参考。您可以自由使用、修改和分享。
+本项目为"腾讯自研虾作业"结课作品，采用MIT许可证。您可以自由使用、修改和分享代码。
 
 ## 联系信息
-- 项目作者：一人公司 · 旅行规划师小明
-- 项目类型：计算机科学结课作品
-- 技术栈：HTML5, CSS3, JavaScript
-- 部署方式：GitHub Pages
+- **项目作者**：高梓翔
+- **项目类型**：腾讯自研虾作业 - AI员工团队
+- **技术栈**：HTML5, CSS3, JavaScript, Python Flask, 智谱AI API
+- **部署方式**：GitHub Pages + Flask本地服务器
 
 ---
 
-**祝您的北京之旅愉快！** 🎉
-=======
-# beijing-travel-planner
->>>>>>> 71762aa07e6fadf5ceb68cfb076b936e227a783a
+**感谢评审！** 🎉
+
+**项目链接汇总：**
+- 网站：https://xav1erz.github.io/beijing-travel-planner/
+- 仓库：https://github.com/Xav1erZ/beijing-travel-planner
+- PPT：包含在本仓库中

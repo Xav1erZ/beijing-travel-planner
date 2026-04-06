@@ -269,6 +269,24 @@
                 <button class="cta-button primary generate-plan" id="generate-plan">
                     <i class="fas fa-bolt"></i> 生成AI行程计划
                 </button>
+                
+                <!-- AI生成行程介绍按钮 -->
+                <button id="aiSpeechBtn" class="cta-button secondary" style="margin-top: 20px; padding: 12px 24px; width: 100%;">
+                    <i class="fas fa-comment-dots"></i> ✨ 智谱AI生成行程介绍（真实API）
+                </button>
+                
+                <div id="aiSpeechResult" style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; border-left: 4px solid #4a6cf7; display: none;">
+                    <h4 style="margin-top: 0; color: #4a6cf7; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-robot"></i> AI 推荐行程介绍
+                    </h4>
+                    <div id="aiSpeechContent" style="line-height: 1.6; color: #333;">
+                        <!-- AI生成的内容将显示在这里 -->
+                    </div>
+                    <div id="aiSpeechLoading" style="display: none; text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #4a6cf7; margin-bottom: 10px;"></i>
+                        <p style="color: #666;">AI 正在思考中，请稍候...</p>
+                    </div>
+                </div>
             </div>
             
             <div class="plan-result" id="plan-result">
@@ -598,5 +616,103 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <!-- AI生成行程介绍脚本 -->
+    <script>
+        document.getElementById('aiSpeechBtn').addEventListener('click', async function() {
+            // 获取用户选择的偏好
+            const activeTags = document.querySelectorAll('.interest-tag.active');
+            let interests = [];
+            activeTags.forEach(tag => {
+                interests.push(tag.textContent);
+            });
+            
+            const budgetValue = document.getElementById('budget-amount').textContent;
+            let budgetType = '经济型';
+            if (parseInt(budgetValue) > 3000) budgetType = '豪华型';
+            else if (parseInt(budgetValue) > 1500) budgetType = '中等预算';
+            
+            const travelStyle = document.querySelector('input[name="travel-style"]:checked');
+            const style = travelStyle ? travelStyle.nextElementSibling.textContent : '轻松休闲';
+            
+            // 构建偏好描述
+            const preferences = `兴趣偏好：${interests.join('、')}，预算：${budgetType}（${budgetValue}元），旅行风格：${style}`;
+            
+            // 显示加载状态
+            const resultDiv = document.getElementById('aiSpeechResult');
+            const contentDiv = document.getElementById('aiSpeechContent');
+            const loadingDiv = document.getElementById('aiSpeechLoading');
+            
+            resultDiv.style.display = 'block';
+            contentDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 智谱AI思考中...';
+            
+            try {
+                // 调用真实的智谱AI API
+                const response = await fetch('/generate_speech', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ preferences: preferences })
+                });
+                
+                const data = await response.json();
+                
+                if (data.speech) {
+                    loadingDiv.style.display = 'none';
+                    contentDiv.style.display = 'block';
+                    
+                    // 格式化AI返回的内容（保留换行）
+                    let formattedSpeech = data.speech;
+                    
+                    // 将换行符转换为HTML换行
+                    formattedSpeech = formattedSpeech.replace(/\n/g, '<br>');
+                    
+                    // 添加一些样式增强
+                    formattedSpeech = formattedSpeech.replace(/第一天/g, '<strong>第一天</strong>');
+                    formattedSpeech = formattedSpeech.replace(/第二天/g, '<strong>第二天</strong>');
+                    formattedSpeech = formattedSpeech.replace(/第三天/g, '<strong>第三天</strong>');
+                    formattedSpeech = formattedSpeech.replace(/建议：/g, '<strong>建议：</strong>');
+                    formattedSpeech = formattedSpeech.replace(/注意：/g, '<strong>注意：</strong>');
+                    
+                    contentDiv.innerHTML = `
+                        <div style="margin-bottom: 15px; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 14px; color: #1976d2;">
+                            <i class="fas fa-microchip"></i> 本次由 <strong>智谱AI GLM-4模型</strong> 生成，基于您的实时偏好动态创建
+                        </div>
+                        ${formattedSpeech}
+                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd; font-size: 12px; color: #666;">
+                            <i class="fas fa-info-circle"></i> 提示：每次点击都会调用智谱AI API实时生成，每次结果都可能不同，体现AI的创造力！
+                        </div>
+                    `;
+                    
+                    // 平滑滚动到结果区域
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                } else {
+                    throw new Error('AI未返回有效内容');
+                }
+                
+            } catch (err) {
+                console.error('AI调用失败:', err);
+                loadingDiv.style.display = 'none';
+                contentDiv.style.display = 'block';
+                contentDiv.innerHTML = `
+                    <div style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 8px;">
+                        <i class="fas fa-exclamation-triangle"></i> <strong>AI服务暂时不可用</strong><br>
+                        错误信息：${err.message}<br><br>
+                        您可以尝试：<br>
+                        1. 检查网络连接<br>
+                        2. 稍后重试<br>
+                        3. 或使用下方的"生成AI行程计划"功能
+                    </div>
+                `;
+            } finally {
+                // 恢复按钮状态
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-comment-dots"></i> ✨ 智谱AI生成行程介绍（真实API）';
+            }
+        });
+    </script>
 </body>
 </html>

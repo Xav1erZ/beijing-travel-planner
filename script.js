@@ -320,9 +320,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 控制台欢迎信息
-    console.log('🎉 AI北京三日游策划公司网站已加载完成！');
-    console.log('👤 创始人：一人公司 · 旅行规划师小明');
-    console.log('🎓 项目：计算机科学结课作品');
-    console.log('📍 地点：北京');
-    console.log('🚀 使用纯HTML/CSS/JS构建，支持GitHub Pages部署');
+    console.log('🎉 腾讯自研虾作业：AI员工团队网站已加载完成！');
+    console.log('👤 学生：高梓翔');
+    console.log('🎓 项目：腾讯自研虾 - 创建你的AI员工团队');
+    console.log('📍 主题：一人公司的AI虚拟团队协作');
+    console.log('🚀 使用纯HTML/CSS/JS构建，已部署到GitHub Pages');
 });
