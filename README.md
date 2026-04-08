@@ -53,11 +53,13 @@ beijing-travel-planner/
 
 ## 快速开始
 
-### 1. 使用GitHub Pages版本（推荐）
-1. 直接访问：[https://xav1erz.github.io/beijing-travel-planner/](https://xav1erz.github.io/beijing-travel-planner/)
-2. 无需任何配置，开箱即用
+### 1. 使用GitHub Pages版本（推荐，静态网站）
+- **访问地址**：[https://xav1erz.github.io/beijing-travel-planner/](https://xav1erz.github.io/beijing-travel-planner/)
+- **特点**：无需任何配置，开箱即用
+- **AI功能**：使用智能模拟数据，无需API密钥
+- **适合场景**：快速演示、分享、评审
 
-### 2. 本地运行带AI功能版本
+### 2. 本地运行带AI功能版本（完整功能）
 ```bash
 # 克隆项目
 git clone https://github.com/Xav1erZ/beijing-travel-planner.git
@@ -71,6 +73,36 @@ python app.py
 
 # 访问 http://127.0.0.1:5001
 ```
+- **特点**：完整的智谱AI API集成
+- **AI功能**：真实的AI内容生成，需要API密钥（已预配置）
+- **适合场景**：本地开发、测试、体验完整AI功能
+
+### 3. 两种模式的区别
+| 功能 | GitHub Pages版本 | 本地Flask版本 |
+|------|----------------|---------------|
+| AI生成行程介绍 | ✅ 智能模拟数据 | ✅ 真实智谱AI API |
+| AI行程规划 | ✅ 智能模拟数据 | ✅ 真实智谱AI API |
+| 静态内容 | ✅ 完整 | ✅ 完整 |
+| 响应式设计 | ✅ 完整 | ✅ 完整 |
+| 部署要求 | 无 | Python 3.8+ |
+| API密钥 | 不需要 | 需要（已预配置） |
+
+### 4. 常见问题解决
+
+#### Q: 在GitHub Pages上看到"AI服务暂时不可用"错误？
+**A**: 这是正常的！GitHub Pages只支持静态文件，无法运行Python Flask服务器。请：
+1. 使用"生成AI行程计划"按钮（使用模拟数据）
+2. 或在本地运行 `python app.py` 体验完整AI功能
+
+#### Q: 如何在本地运行完整AI功能？
+**A**: 
+1. 确保已安装Python 3.8+
+2. 运行 `pip install -r requirements.txt`
+3. 运行 `python app.py`
+4. 访问 http://127.0.0.1:5001
+
+#### Q: API密钥会过期吗？
+**A**: 项目中已预配置API密钥，但智谱AI的API密钥可能有使用限制或过期时间。如果遇到API错误，可以在`app.py`中替换为有效的API密钥。
 
 ## AI功能详解
 

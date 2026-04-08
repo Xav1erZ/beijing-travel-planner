@@ -97,65 +97,109 @@ document.addEventListener('DOMContentLoaded', function() {
             generatePlanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI正在规划中...';
             generatePlanBtn.disabled = true;
             
-            // 模拟AI规划过程（实际项目中这里应该调用API）
-            setTimeout(() => {
-                // 生成个性化行程
-                const itinerary = generatePersonalizedItinerary(activeInterest, budget, travelStyle);
-                
-                // 更新结果区域
-                resultContent.innerHTML = `
-                    <div class="personalized-plan">
-                        <h4>为您定制的北京三日游行程</h4>
-                        <div class="plan-summary">
-                            <p><i class="fas fa-user-circle"></i> <strong>兴趣偏好：</strong>${activeInterest}</p>
-                            <p><i class="fas fa-wallet"></i> <strong>预算范围：</strong>${budget}元/人</p>
-                            <p><i class="fas fa-hiking"></i> <strong>旅行风格：</strong>${getTravelStyleName(travelStyle)}</p>
+            // 检查是否在本地Flask服务器运行
+            const isLocalServer = window.location.hostname === '127.0.0.1' || 
+                                  window.location.hostname === 'localhost' || 
+                                  window.location.port === '5001';
+            
+            // 模拟AI规划过程
+            setTimeout(async () => {
+                try {
+                    let itinerary;
+                    
+                    if (isLocalServer) {
+                        // 在本地Flask服务器运行，尝试调用真实API
+                        try {
+                            const preferences = `兴趣偏好：${activeInterest}，预算：${budget}元/人，旅行风格：${getTravelStyleName(travelStyle)}`;
+                            
+                            const response = await fetch('/generate_speech', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ preferences: preferences })
+                            });
+                            
+                            if (!response.ok) {
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            
+                            const data = await response.json();
+                            itinerary = data.speech || generatePersonalizedItinerary(activeInterest, budget, travelStyle);
+                            
+                        } catch (apiError) {
+                            console.log('API调用失败，使用模拟数据:', apiError.message);
+                            itinerary = generatePersonalizedItinerary(activeInterest, budget, travelStyle);
+                        }
+                    } else {
+                        // 在GitHub Pages静态网站运行，使用模拟数据
+                        itinerary = generatePersonalizedItinerary(activeInterest, budget, travelStyle);
+                    }
+                    
+                    // 更新结果区域
+                    resultContent.innerHTML = `
+                        <div class="personalized-plan">
+                            <h4>为您定制的北京三日游行程</h4>
+                            <div class="plan-summary">
+                                <p><i class="fas fa-user-circle"></i> <strong>兴趣偏好：</strong>${activeInterest}</p>
+                                <p><i class="fas fa-wallet"></i> <strong>预算范围：</strong>${budget}元/人</p>
+                                <p><i class="fas fa-hiking"></i> <strong>旅行风格：</strong>${getTravelStyleName(travelStyle)}</p>
+                            </div>
+                            
+                            <div class="plan-details">
+                                ${itinerary}
+                            </div>
+                            
+                            <div class="plan-tips">
+                                <h5><i class="fas fa-lightbulb"></i> AI规划建议：</h5>
+                                <ul>
+                                    <li>建议提前预约故宫门票，避免排队</li>
+                                    <li>长城行程建议选择工作日前往，避开周末人流</li>
+                                    <li>根据预算，${budget < 1500 ? '推荐经济型住宿和公共交通' : budget < 3000 ? '推荐舒适型住宿和出租车出行' : '推荐豪华型住宿和专车服务'}</li>
+                                    <li><i class="fas fa-arrow-down"></i> 下方"信息来源"模块提供了官方参考链接，建议出行前查看最新信息</li>
+                                </ul>
+                            </div>
+                            
+                            <button class="cta-button secondary save-plan">
+                                <i class="fas fa-download"></i> 保存行程计划
+                            </button>
                         </div>
-                        
-                        <div class="plan-details">
-                            ${itinerary}
-                        </div>
-                        
-                        <div class="plan-tips">
-                            <h5><i class="fas fa-lightbulb"></i> AI规划建议：</h5>
-                            <ul>
-                                <li>建议提前预约故宫门票，避免排队</li>
-                                <li>长城行程建议选择工作日前往，避开周末人流</li>
-                                <li>根据预算，${budget < 1500 ? '推荐经济型住宿和公共交通' : budget < 3000 ? '推荐舒适型住宿和出租车出行' : '推荐豪华型住宿和专车服务'}</li>
-                                <li><i class="fas fa-arrow-down"></i> 下方"信息来源"模块提供了官方参考链接，建议出行前查看最新信息</li>
-                            </ul>
-                        </div>
-                        
-                        <button class="cta-button secondary save-plan">
-                            <i class="fas fa-download"></i> 保存行程计划
-                        </button>
-                    </div>
-                `;
-                
-                // 添加保存按钮事件
-                const savePlanBtn = resultContent.querySelector('.save-plan');
-                if (savePlanBtn) {
-                    savePlanBtn.addEventListener('click', function() {
-                        alert('行程已保存！您可以在个人中心查看。');
-                    });
-                }
-                
-                // 恢复按钮状态
-                generatePlanBtn.innerHTML = '<i class="fas fa-bolt"></i> 重新生成AI行程计划';
-                generatePlanBtn.disabled = false;
-                
-                // 滚动到信息来源模块
-                setTimeout(() => {
-                    const sourcesSection = document.getElementById('sources-section');
-                    if (sourcesSection) {
-                        sourcesSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                    `;
+                    
+                    // 添加保存按钮事件
+                    const savePlanBtn = resultContent.querySelector('.save-plan');
+                    if (savePlanBtn) {
+                        savePlanBtn.addEventListener('click', function() {
+                            alert('行程已保存！您可以在个人中心查看。');
                         });
                     }
-                }, 500);
+                    
+                } catch (error) {
+                    console.error('行程生成失败:', error);
+                    resultContent.innerHTML = `
+                        <div class="plan-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h5>抱歉，AI规划服务暂时不可用</h5>
+                            <p>错误信息：${error.message}</p>
+                            <p>请稍后重试，或使用静态的行程推荐功能。</p>
+                        </div>
+                    `;
+                } finally {
+                    // 恢复按钮状态
+                    generatePlanBtn.innerHTML = '<i class="fas fa-bolt"></i> 重新生成AI行程计划';
+                    generatePlanBtn.disabled = false;
+                    
+                    // 滚动到信息来源模块
+                    setTimeout(() => {
+                        const sourcesSection = document.getElementById('sources-section');
+                        if (sourcesSection) {
+                            sourcesSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }, 500);
+                }
                 
-            }, 1500); // 模拟1.5秒的AI处理时间
+            }, isLocalServer ? 800 : 1500); // 根据服务器类型调整延迟时间
         });
     }
 

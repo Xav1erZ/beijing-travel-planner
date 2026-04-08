@@ -650,14 +650,52 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 智谱AI思考中...';
             
             try {
-                // 调用真实的智谱AI API
-                const response = await fetch('/generate_speech', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ preferences: preferences })
-                });
+                // 检查是否在本地Flask服务器运行
+                const isLocalServer = window.location.hostname === '127.0.0.1' || 
+                                      window.location.hostname === 'localhost' || 
+                                      window.location.port === '5001';
                 
-                const data = await response.json();
+                let data;
+                
+                if (isLocalServer) {
+                    // 在本地Flask服务器运行，调用真实API
+                    const response = await fetch('/generate_speech', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ preferences: preferences })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    data = await response.json();
+                } else {
+                    // 在GitHub Pages静态网站运行，使用模拟数据
+                    // 模拟智谱AI API响应
+                    const mockResponses = [
+                        `看到您对${interests.join('、')}感兴趣！我为您设计了一份精彩的北京三日游方案。第一天从故宫开始，感受皇家文化的深厚底蕴；第二天登上长城，体验"不到长城非好汉"的豪情；第三天深入胡同，品味老北京的市井生活。全程都会考虑您的${budgetType}预算和${style}的旅行风格！`,
+                        
+                        `基于您的偏好（${interests.join('、')}），我精心规划了这次北京之旅！第一天：天安门广场-故宫深度游；第二天：八达岭长城-颐和园；第三天：天坛-南锣鼓巷。根据${budgetValue}元的预算，我推荐${budgetType}的住宿和交通方案。`,
+                        
+                        `为您量身打造的北京三日游来啦！考虑到您喜欢${interests.join('、')}，我特别安排了相关体验。第一天探索皇家建筑群，第二天感受自然与人文的结合，第三天体验传统与现代的融合。${style}的行程节奏让您轻松享受旅程！`
+                    ];
+                    
+                    // 根据偏好选择不同的响应
+                    let responseIndex = 0;
+                    if (interests.includes('历史文化')) responseIndex = 0;
+                    else if (interests.includes('自然风光')) responseIndex = 1;
+                    else if (interests.includes('美食体验')) responseIndex = 2;
+                    
+                    data = {
+                        speech: mockResponses[responseIndex],
+                        status: "simulated",
+                        model: "模拟GLM-4"
+                    };
+                    
+                    // 模拟网络延迟
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                }
                 
                 if (data.speech) {
                     loadingDiv.style.display = 'none';
